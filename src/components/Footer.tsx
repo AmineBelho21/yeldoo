@@ -12,6 +12,25 @@ export default function Footer() {
 
   return (
     <footer className="bg-yeldoo-navy overflow-hidden">
+
+      {/* Giant dramatic closing text */}
+    {/*  <div ref={ref} className="overflow-hidden border-t border-white/10">
+        <motion.p
+          initial={{ opacity: 0, y: "40%" }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
+          className="font-display font-bold text-white text-center leading-none tracking-tight select-none py-8 lg:py-10"
+          style={{ fontSize: "clamp(3.5rem, 10vw, 9rem)" }}
+        >
+          {t.footer.closing.split("\n").map((line, i) => (
+            <span key={i}>
+              {line}
+              {i === 0 && <br />}
+            </span>
+          ))}
+        </motion.p>
+      </div> */}
+
       {/* CTA band */}
       <div className="border-b border-white/10">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 py-20 lg:py-28">
@@ -85,23 +104,7 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Giant dramatic closing text */}
-      <div ref={ref} className="overflow-hidden border-t border-white/10">
-        <motion.p
-          initial={{ opacity: 0, y: "40%" }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
-          className="font-display font-bold text-white text-center leading-none tracking-tight select-none py-8 lg:py-10"
-          style={{ fontSize: "clamp(3.5rem, 10vw, 9rem)" }}
-        >
-          {t.footer.closing.split("\n").map((line, i) => (
-            <span key={i}>
-              {line}
-              {i === 0 && <br />}
-            </span>
-          ))}
-        </motion.p>
-      </div>
+
     </footer>
   );
 }
