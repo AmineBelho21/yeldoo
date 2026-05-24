@@ -28,6 +28,10 @@ export const metadata: Metadata = {
   description:
     "Yeldoo connects discerning Algerians to exclusive last-minute deals on hotels, restaurants, and experiences — while helping premier venues maximize every empty seat, room, and slot.",
   keywords: ["Algeria", "hotels", "restaurants", "experiences", "deals", "yield management"],
+    icons: {
+    icon: "../public/logo.webp",
+  },
+  
 };
 
 export default function RootLayout({

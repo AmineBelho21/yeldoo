@@ -137,7 +137,7 @@ const fr: Translations = {
     headlinePost: "sur le lifestyle.",
     subCopy:
       "Yeldoo connecte les Algériens à des offres exclusives de dernière minute sur les hôtels, restaurants et expériences — permettant aux meilleures enseignes de maximiser chaque siège, chambre et créneau vacant.",
-    cta1: "Découvrir les offres",
+    cta1: "Nos offres",
     cta2: "Référencer votre établissement",
     socialProof: "Approuvé par 10 000+ utilisateurs actifs",
     ui: {
@@ -336,7 +336,7 @@ const en: Translations = {
     headlinePost: "lifestyle deals.",
     subCopy:
       "Yeldoo connects discerning Algerians to exclusive off-peak deals on hotels, restaurants, and experiences — helping premier venues maximize every empty seat, room, and slot.",
-    cta1: "Discover Deals",
+    cta1: "Our Deals",
     cta2: "List your venue",
     socialProof: "Trusted by 10,000+ active users",
     ui: {
