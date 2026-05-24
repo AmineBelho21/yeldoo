@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import Image from "next/image";
+import logoImg from "@/public/logo.webp";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Globe, ChevronDown } from "lucide-react";
 import { useLanguage } from "@/src/context/LanguageContext";
@@ -59,9 +61,10 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
           <a href="#" className="flex items-center group">
-            <img
-              src="/logo.webp"
+            <Image
+              src={logoImg}
               alt="Yeldoo"
+              height={40}
               className="h-10 w-auto rounded-md group-hover:scale-105 transition-transform"
             />
           </a>

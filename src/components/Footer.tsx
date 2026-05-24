@@ -1,8 +1,10 @@
 "use client";
 
 import { useRef } from "react";
+import Image from "next/image";
+import logoImg from "@/public/logo.webp";
 import { motion, useInView } from "framer-motion";
-import { Zap, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useLanguage } from "@/src/context/LanguageContext";
 
 export default function Footer() {
@@ -91,10 +93,8 @@ export default function Footer() {
 
       {/* Legal bar */}
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-white/35 text-xs">
-        <div className="flex items-center gap-2">
-          <div className="w-5 h-5 bg-yeldoo-navy border border-white/20 rounded flex items-center justify-center">
-            <Zap className="w-3 h-3 text-yeldoo-gold fill-yeldoo-gold" />
-          </div>
+        <div className="flex items-center gap-2.5">
+          <Image src={logoImg} alt="Yeldoo" height={28} className="h-7 w-auto rounded-md" />
           <span>{t.footer.legal}</span>
         </div>
         <div className="flex items-center gap-6">
