@@ -10,57 +10,32 @@ import {
   Zap,
   ChevronRight,
 } from "lucide-react";
+import { useLanguage } from "@/src/context/LanguageContext";
 
-interface Venue {
-  name: string;
-  type: string;
-  location: string;
-  originalPrice: string;
-  newPrice: string;
-  discount: string;
-  slotsLeft: number;
-  category: string;
-  gradientFrom: string;
-  gradientTo: string;
-  claimedPercent: number;
-}
-
-const venues: Venue[] = [
+const VENUES_STATIC = [
   {
     name: "Hyatt Regency Algiers",
-    type: "5★ Luxury Hotel",
-    location: "Algiers, Algeria",
     originalPrice: "24,000",
     newPrice: "14,000",
-    discount: "42% OFF",
     slotsLeft: 2,
-    category: "Deluxe Suite",
     gradientFrom: "#17155A",
     gradientTo: "#2D2A8A",
     claimedPercent: 80,
   },
   {
     name: "Restaurant La Médina",
-    type: "Fine Dining • Algiers",
-    location: "Old Medina, Algiers",
     originalPrice: "8,500",
     newPrice: "4,900",
-    discount: "42% OFF",
     slotsLeft: 4,
-    category: "Table for 2",
     gradientFrom: "#7C2D12",
     gradientTo: "#B91C1C",
     claimedPercent: 60,
   },
   {
     name: "Sahara Desert Experience",
-    type: "Luxury Adventure",
-    location: "Tamanrasset, Algeria",
     originalPrice: "45,000",
     newPrice: "27,000",
-    discount: "40% OFF",
     slotsLeft: 1,
-    category: "Private 2-day Tour",
     gradientFrom: "#92400E",
     gradientTo: "#D97706",
     claimedPercent: 90,
@@ -81,16 +56,18 @@ const itemVariants: Variants = {
 };
 
 export default function Hero() {
+  const { t } = useLanguage();
   const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % venues.length);
+      setActiveIndex((prev) => (prev + 1) % VENUES_STATIC.length);
     }, 3800);
     return () => clearInterval(interval);
   }, []);
 
-  const venue = venues[activeIndex];
+  const venue = VENUES_STATIC[activeIndex];
+  const vt = t.hero.venues[activeIndex];
 
   return (
     <section className="relative bg-yeldoo-navy min-h-screen flex items-center overflow-hidden pt-16 lg:pt-20">
@@ -119,7 +96,7 @@ export default function Hero() {
 
       <div className="relative w-full max-w-7xl mx-auto px-6 lg:px-8 py-16 lg:py-24">
         <div className="grid lg:grid-cols-[1fr_1fr] gap-12 xl:gap-20 items-center">
-          {/* ── Left Column ── */}
+          {/* Left Column */}
           <motion.div
             variants={containerVariants}
             initial="hidden"
@@ -130,7 +107,7 @@ export default function Hero() {
             <motion.div variants={itemVariants}>
               <span className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/15 rounded-full px-4 py-2 text-sm font-medium text-white/90">
                 <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                Live deals · Algeria&apos;s first yield marketplace
+                {t.hero.badge}
               </span>
             </motion.div>
 
@@ -139,9 +116,9 @@ export default function Hero() {
               variants={itemVariants}
               className="font-display text-5xl sm:text-6xl lg:text-[5.25rem] font-bold text-white leading-[1.04] tracking-tight"
             >
-              The smart marketplace for{" "}
-              <span className="text-yeldoo-gold italic">real-time</span>{" "}
-              lifestyle deals.
+              {t.hero.headlinePre}{" "}
+              <span className="text-yeldoo-gold italic">{t.hero.headlineGold}</span>{" "}
+              {t.hero.headlinePost}
             </motion.h1>
 
             {/* Sub-copy */}
@@ -149,9 +126,7 @@ export default function Hero() {
               variants={itemVariants}
               className="text-white/65 text-lg lg:text-xl leading-[1.75] max-w-[30rem]"
             >
-              Yeldoo connects discerning Algerians to exclusive off-peak deals on hotels,
-              restaurants, and experiences — helping premier venues maximize every empty
-              seat, room, and slot.
+              {t.hero.subCopy}
             </motion.p>
 
             {/* CTAs */}
@@ -160,14 +135,14 @@ export default function Hero() {
                 href="#"
                 className="inline-flex items-center justify-center gap-2 bg-yeldoo-gold text-yeldoo-navy font-semibold text-base px-7 py-4 rounded-full hover:bg-yeldoo-gold-dark transition-all hover:scale-105 shadow-lg"
               >
-                Discover Deals
+                {t.hero.cta1}
                 <ArrowRight className="w-4 h-4" />
               </a>
               <a
                 href="#"
                 className="inline-flex items-center justify-center gap-2 bg-white/10 text-white font-medium text-base px-7 py-4 rounded-full border border-white/20 hover:bg-white/15 transition-all"
               >
-                List your venue
+                {t.hero.cta2}
                 <ChevronRight className="w-4 h-4 text-white/60" />
               </a>
             </motion.div>
@@ -192,12 +167,12 @@ export default function Hero() {
                     <Star key={i} className="w-3.5 h-3.5 text-yeldoo-gold fill-yeldoo-gold" />
                   ))}
                 </div>
-                <p className="text-white/50 text-sm">Trusted by 10,000+ active users</p>
+                <p className="text-white/50 text-sm">{t.hero.socialProof}</p>
               </div>
             </motion.div>
           </motion.div>
 
-          {/* ── Right Column — Animated Venue Card ── */}
+          {/* Right Column — Animated Venue Card */}
           <motion.div
             initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
@@ -223,7 +198,7 @@ export default function Hero() {
                     {/* Top row */}
                     <div className="flex items-start justify-between">
                       <div className="bg-black/35 backdrop-blur-sm rounded-xl px-3.5 py-2">
-                        <p className="text-white/70 text-xs font-medium">{venue.category}</p>
+                        <p className="text-white/70 text-xs font-medium">{vt.category}</p>
                         <p className="text-white font-semibold text-sm leading-tight">
                           {venue.name}
                         </p>
@@ -238,8 +213,8 @@ export default function Hero() {
 
                     {/* Bottom row */}
                     <div>
-                      <p className="text-white/50 text-xs font-medium">{venue.location}</p>
-                      <p className="text-white/80 text-sm">{venue.type}</p>
+                      <p className="text-white/50 text-xs font-medium">{vt.location}</p>
+                      <p className="text-white/80 text-sm">{vt.type}</p>
                     </div>
                   </motion.div>
                 </AnimatePresence>
@@ -249,7 +224,7 @@ export default function Hero() {
                   <div className="flex items-end justify-between">
                     <div className="space-y-1">
                       <p className="text-yeldoo-muted text-xs font-semibold uppercase tracking-widest">
-                        Live Yield Price
+                        {t.hero.ui.liveYieldPrice}
                       </p>
                       <div className="flex items-baseline gap-2">
                         <AnimatePresence mode="wait">
@@ -271,7 +246,7 @@ export default function Hero() {
                           {venue.originalPrice} DA
                         </span>
                         <span className="text-xs font-bold text-white bg-emerald-500 px-2 py-0.5 rounded-full">
-                          {venue.discount}
+                          {vt.discount}
                         </span>
                       </div>
                     </div>
@@ -288,15 +263,15 @@ export default function Hero() {
                           {venue.slotsLeft}
                         </motion.p>
                       </AnimatePresence>
-                      <p className="text-yeldoo-muted text-xs font-medium">slots left</p>
+                      <p className="text-yeldoo-muted text-xs font-medium">{t.hero.ui.slotsLeft}</p>
                     </div>
                   </div>
 
                   {/* Fill bar */}
                   <div>
                     <div className="flex justify-between text-xs text-yeldoo-muted mb-1.5 font-medium">
-                      <span>Filling fast</span>
-                      <span>{venue.claimedPercent}% claimed</span>
+                      <span>{t.hero.ui.fillingFast}</span>
+                      <span>{venue.claimedPercent}% {t.hero.ui.claimed}</span>
                     </div>
                     <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
                       <motion.div
@@ -311,7 +286,7 @@ export default function Hero() {
 
                   <button className="w-full bg-yeldoo-navy text-white font-semibold py-3.5 rounded-xl hover:bg-yeldoo-navy-light transition-colors flex items-center justify-center gap-2 text-sm">
                     <Zap className="w-4 h-4 text-yeldoo-gold fill-yeldoo-gold" />
-                    Book this deal now
+                    {t.hero.ui.bookNow}
                   </button>
                 </div>
               </div>
@@ -324,11 +299,11 @@ export default function Hero() {
               transition={{ duration: 0.65, delay: 0.9, ease: [0.22, 1, 0.36, 1] }}
               className="absolute -left-14 top-1/3 bg-white rounded-2xl shadow-xl border border-yeldoo-border p-4 hidden xl:block"
             >
-              <p className="text-yeldoo-muted text-xs font-medium">Off-peak savings</p>
+              <p className="text-yeldoo-muted text-xs font-medium">{t.hero.ui.offPeakSavings}</p>
               <p className="font-display text-xl font-bold text-yeldoo-navy mt-0.5">DA 10,000</p>
               <div className="flex items-center gap-1 text-emerald-600 text-xs font-semibold mt-1">
                 <TrendingDown className="w-3.5 h-3.5" />
-                <span>vs peak rate</span>
+                <span>{t.hero.ui.vsPeak}</span>
               </div>
             </motion.div>
 
@@ -345,14 +320,14 @@ export default function Hero() {
                 </div>
                 <div>
                   <p className="text-white font-semibold text-sm">2h 14m</p>
-                  <p className="text-white/45 text-xs">left at this price</p>
+                  <p className="text-white/45 text-xs">{t.hero.ui.leftAtPrice}</p>
                 </div>
               </div>
             </motion.div>
 
             {/* Dot indicators */}
             <div className="flex items-center justify-center gap-2 mt-5">
-              {venues.map((_, i) => (
+              {VENUES_STATIC.map((_, i) => (
                 <button
                   key={i}
                   onClick={() => setActiveIndex(i)}

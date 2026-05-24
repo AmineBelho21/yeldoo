@@ -33,6 +33,19 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Arabic font override — applied by LanguageContext when locale = "ar" */
+body.font-arabic {
+  font-family: var(--font-cairo), system-ui, sans-serif;
+}
+body.font-arabic .font-display {
+  font-family: var(--font-cairo), system-ui, sans-serif;
+}
+
+/* RTL base */
+html[dir="rtl"] body {
+  text-align: right;
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }

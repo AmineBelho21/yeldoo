@@ -1,24 +1,47 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Zap } from "lucide-react";
+import { Menu, X, Zap, Globe, ChevronDown } from "lucide-react";
+import { useLanguage } from "@/src/context/LanguageContext";
+import { type Locale } from "@/src/lib/translations";
 
-const navLinks = [
-  { label: "Platform", href: "#platform" },
-  { label: "Partners", href: "#partners" },
-  { label: "Pricing", href: "#" },
-  { label: "About", href: "#" },
+const LOCALES: { id: Locale; label: string; native: string }[] = [
+  { id: "fr", label: "Français", native: "FR" },
+  { id: "en", label: "English", native: "EN" },
+  { id: "ar", label: "عربي", native: "عر" },
 ];
 
 export default function Navbar() {
+  const { t, locale, setLocale } = useLanguage();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [langOpen, setLangOpen] = useState(false);
+  const langRef = useRef<HTMLDivElement>(null);
+
+  const navLinks = [
+    { label: t.nav.platform, href: "#platform" },
+    { label: t.nav.partners, href: "#partners" },
+    { label: t.nav.pricing, href: "#" },
+    { label: t.nav.about, href: "#" },
+  ];
+
+  const currentLang = LOCALES.find((l) => l.id === locale)!;
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (langRef.current && !langRef.current.contains(e.target as Node)) {
+        setLangOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
   }, []);
 
   return (
@@ -63,34 +86,104 @@ export default function Navbar() {
             ))}
           </div>
 
-          {/* Desktop CTAs */}
-          <div className="hidden lg:flex items-center gap-4">
+          {/* Desktop right: language switcher + CTAs */}
+          <div className="hidden lg:flex items-center gap-3">
+            <div ref={langRef} className="relative">
+              <button
+                onClick={() => setLangOpen((v) => !v)}
+                className={`inline-flex items-center gap-1.5 text-sm font-semibold px-3 py-2 rounded-full border transition-all ${
+                  scrolled ? "border-yeldoo-border text-yeldoo-navy hover:border-yeldoo-navy/40" : "border-white/20 text-white hover:border-white/40"
+                }`}
+                aria-label="Change language"
+              >
+                <Globe className="w-3.5 h-3.5" />
+                <span>{currentLang.native}</span>
+                <ChevronDown className={`w-3 h-3 transition-transform duration-200 ${langOpen ? "rotate-180" : ""}`} />
+              </button>
+              <AnimatePresence>
+                {langOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -8, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -8, scale: 0.95 }}
+                    transition={{ duration: 0.18 }}
+                    className="absolute top-full mt-2 end-0 bg-white rounded-xl shadow-xl border border-yeldoo-border min-w-[140px] overflow-hidden z-50"
+                  >
+                    {LOCALES.map((lang) => (
+                      <button
+                        key={lang.id}
+                        onClick={() => { setLocale(lang.id); setLangOpen(false); }}
+                        className={`w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium transition-colors hover:bg-yeldoo-cream ${
+                          locale === lang.id ? "text-yeldoo-navy bg-yeldoo-gold/10 font-semibold" : "text-yeldoo-muted"
+                        }`}
+                      >
+                        <span className="font-semibold w-5 text-center text-xs">{lang.native}</span>
+                        <span>{lang.label}</span>
+                      </button>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
             <a
               href="#"
               className={`text-sm font-medium transition-colors hover:text-yeldoo-gold ${
                 scrolled ? "text-yeldoo-navy" : "text-white"
               }`}
             >
-              Log in
+              {t.nav.login}
             </a>
             <a
               href="#"
               className="bg-yeldoo-gold text-yeldoo-navy text-sm font-semibold px-5 py-2.5 rounded-full hover:bg-yeldoo-gold-dark transition-all hover:scale-105 shadow-sm"
             >
-              Get Started
+              {t.nav.cta}
             </a>
           </div>
 
-          {/* Mobile burger */}
-          <button
-            className={`lg:hidden p-1 rounded-md transition-colors ${
-              scrolled ? "text-yeldoo-navy" : "text-white"
-            }`}
-            onClick={() => setMobileOpen((v) => !v)}
-            aria-label="Toggle menu"
-          >
-            {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
+          {/* Mobile: lang pill + burger */}
+          <div className="lg:hidden flex items-center gap-3">
+            <button
+              onClick={() => setLangOpen((v) => !v)}
+              className={`inline-flex items-center gap-1 text-xs font-bold px-2.5 py-1.5 rounded-full border transition-all ${
+                scrolled ? "border-yeldoo-border text-yeldoo-navy" : "border-white/25 text-white"
+              }`}
+            >
+              <Globe className="w-3 h-3" />{currentLang.native}
+            </button>
+            <AnimatePresence>
+              {langOpen && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  className="absolute top-16 end-6 bg-white rounded-xl shadow-xl border border-yeldoo-border overflow-hidden z-50"
+                >
+                  {LOCALES.map((lang) => (
+                    <button
+                      key={lang.id}
+                      onClick={() => { setLocale(lang.id); setLangOpen(false); }}
+                      className={`w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium transition-colors hover:bg-yeldoo-cream ${
+                        locale === lang.id ? "text-yeldoo-navy bg-yeldoo-gold/10 font-semibold" : "text-yeldoo-muted"
+                      }`}
+                    >
+                      <span className="font-semibold w-5 text-center text-xs">{lang.native}</span>
+                      <span>{lang.label}</span>
+                    </button>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
+            <button
+              className={`p-1 rounded-md transition-colors ${
+                scrolled ? "text-yeldoo-navy" : "text-white"
+              }`}
+              onClick={() => setMobileOpen((v) => !v)}
+              aria-label="Toggle menu"
+            >
+              {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
         </div>
       </div>
 
@@ -117,17 +210,11 @@ export default function Navbar() {
                 </a>
               ))}
               <div className="pt-4 border-t border-yeldoo-border flex flex-col gap-3">
-                <a
-                  href="#"
-                  className="text-yeldoo-navy text-base font-medium hover:text-yeldoo-gold transition-colors"
-                >
-                  Log in
+                <a href="#" className="text-yeldoo-navy text-base font-medium hover:text-yeldoo-gold transition-colors">
+                  {t.nav.login}
                 </a>
-                <a
-                  href="#"
-                  className="bg-yeldoo-gold text-yeldoo-navy text-base font-semibold px-5 py-3 rounded-full text-center hover:bg-yeldoo-gold-dark transition-colors"
-                >
-                  Get Started
+                <a href="#" className="bg-yeldoo-gold text-yeldoo-navy text-base font-semibold px-5 py-3 rounded-full text-center hover:bg-yeldoo-gold-dark transition-colors">
+                  {t.nav.cta}
                 </a>
               </div>
             </div>
