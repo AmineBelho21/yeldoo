@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Zap, Globe, ChevronDown } from "lucide-react";
+import { Menu, X, Globe, ChevronDown } from "lucide-react";
 import { useLanguage } from "@/src/context/LanguageContext";
 import { type Locale } from "@/src/lib/translations";
 
@@ -29,7 +30,7 @@ export default function Navbar() {
   const currentLang = LOCALES.find((l) => l.id === locale)!;
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
+    const handleScroll = () => setScrolled(window.scrollY > window.innerHeight - 80);
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -51,24 +52,22 @@ export default function Navbar() {
       transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-white/95 backdrop-blur-xl border-b border-yeldoo-border shadow-sm"
+          ? "bg-yeldoo-navy/95 backdrop-blur-xl border-b border-white/10 shadow-lg shadow-black/20"
           : "bg-transparent"
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
-          <a href="#" className="flex items-center gap-2.5 group">
-            <div className="w-8 h-8 bg-yeldoo-navy rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
-              <Zap className="w-4 h-4 text-yeldoo-gold fill-yeldoo-gold" />
-            </div>
-            <span
-              className={`font-display text-xl font-bold tracking-tight transition-colors ${
-                scrolled ? "text-yeldoo-navy" : "text-white"
-              }`}
-            >
-              yeldoo
-            </span>
+          <a href="#" className="flex items-center group">
+            <Image
+              src="/logo.webp"
+              alt="Yeldoo"
+              width={40}
+              height={40}
+              className="h-10 w-10 rounded-xl object-cover group-hover:scale-105 transition-transform"
+              priority
+            />
           </a>
 
           {/* Desktop Nav Links */}
@@ -77,9 +76,7 @@ export default function Navbar() {
               <a
                 key={link.label}
                 href={link.href}
-                className={`text-sm font-medium transition-colors hover:text-yeldoo-gold ${
-                  scrolled ? "text-yeldoo-navy/70" : "text-white/80"
-                }`}
+                className="text-sm font-medium text-white/80 transition-colors hover:text-yeldoo-gold"
               >
                 {link.label}
               </a>
@@ -91,9 +88,7 @@ export default function Navbar() {
             <div ref={langRef} className="relative">
               <button
                 onClick={() => setLangOpen((v) => !v)}
-                className={`inline-flex items-center gap-1.5 text-sm font-semibold px-3 py-2 rounded-full border transition-all ${
-                  scrolled ? "border-yeldoo-border text-yeldoo-navy hover:border-yeldoo-navy/40" : "border-white/20 text-white hover:border-white/40"
-                }`}
+                className="inline-flex items-center gap-1.5 text-sm font-semibold px-3 py-2 rounded-full border border-white/20 text-white transition-all hover:border-white/40"
                 aria-label="Change language"
               >
                 <Globe className="w-3.5 h-3.5" />
@@ -127,9 +122,7 @@ export default function Navbar() {
             </div>
             <a
               href="#"
-              className={`text-sm font-medium transition-colors hover:text-yeldoo-gold ${
-                scrolled ? "text-yeldoo-navy" : "text-white"
-              }`}
+              className="text-sm font-medium text-white transition-colors hover:text-yeldoo-gold"
             >
               {t.nav.login}
             </a>
@@ -145,9 +138,7 @@ export default function Navbar() {
           <div className="lg:hidden flex items-center gap-3">
             <button
               onClick={() => setLangOpen((v) => !v)}
-              className={`inline-flex items-center gap-1 text-xs font-bold px-2.5 py-1.5 rounded-full border transition-all ${
-                scrolled ? "border-yeldoo-border text-yeldoo-navy" : "border-white/25 text-white"
-              }`}
+              className="inline-flex items-center gap-1 text-xs font-bold px-2.5 py-1.5 rounded-full border border-white/25 text-white transition-all"
             >
               <Globe className="w-3 h-3" />{currentLang.native}
             </button>
@@ -175,9 +166,7 @@ export default function Navbar() {
               )}
             </AnimatePresence>
             <button
-              className={`p-1 rounded-md transition-colors ${
-                scrolled ? "text-yeldoo-navy" : "text-white"
-              }`}
+              className="p-1 rounded-md text-white transition-colors"
               onClick={() => setMobileOpen((v) => !v)}
               aria-label="Toggle menu"
             >
