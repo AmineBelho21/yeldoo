@@ -11,7 +11,7 @@ const PARTNERS_STATIC = [
     name: "Hôtel El Djazaïr",
     metrics: ["+42%", "–0"],
     gradientFrom: "#0f0c29",
-    gradientTo: "#17155A",
+    gradientTo: "#172243",
     accentColor: "#fdcf31",
     featured: true,
   },

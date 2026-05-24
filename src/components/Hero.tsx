@@ -18,7 +18,7 @@ const VENUES_STATIC = [
     originalPrice: "24,000",
     newPrice: "14,000",
     slotsLeft: 2,
-    gradientFrom: "#17155A",
+    gradientFrom: "#172243",
     gradientTo: "#2D2A8A",
     claimedPercent: 80,
   },
